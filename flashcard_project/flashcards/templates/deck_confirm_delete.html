@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Deck - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; text-align: center;">
+    <h2 style="color: #dc3545; margin-bottom: 20px;">⚠️ Delete Deck</h2>
+    
+    <p style="font-size: 18px; margin-bottom: 30px;">
+        Are you sure you want to delete the deck "<strong>{{ deck.name }}</strong>"?
+    </p>
+    
+    <p style="color: #666; margin-bottom: 30px;">
+        This will permanently delete all {{ deck.get_total_cards }} cards in this deck. This action cannot be undone.
+    </p>
+    
+    <form method="POST" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete Deck</button>
+        <a href="{% url 'deck_detail' deck.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

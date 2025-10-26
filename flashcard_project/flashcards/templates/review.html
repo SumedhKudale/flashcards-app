@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Review - {{ deck.name }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'deck_detail' deck.id %}" style="color: #667eea; text-decoration: none;">← Back to {{ deck.name }}</a>
+    </div>
+    
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h2>Review Session</h2>
+        <p style="color: #888; margin-top: 10px;">{{ remaining_cards }} cards remaining today</p>
+    </div>
+    
+    {% if card %}
+    <div class="card" style="min-height: 300px; display: flex; flex-direction: column; justify-content: center; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;" id="flashcard">
+        <div id="card-front">
+            <h3 style="color: white; margin-bottom: 20px;">Front</h3>
+            <p style="font-size: 24px; line-height: 1.5;">{{ card.front }}</p>
+            <button onclick="flipCard()" class="btn" style="margin-top: 30px; background: white; color: #667eea;">Show Answer</button>
+        </div>
+        
+        <div id="card-back" style="display: none;">
+            <h3 style="color: white; margin-bottom: 20px;">Back</h3>
+            <p style="font-size: 24px; line-height: 1.5; margin-bottom: 30px;">{{ card.back }}</p>
+            
+            <form method="POST" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                {% csrf_token %}
+                <input type="hidden" name="card_id" value="{{ card.id }}">
+                
+                <button type="submit" name="quality" value="1" class="btn btn-danger">
+                    Again<br><small style="font-size: 12px;">&lt;1 min</small>
+                </button>
+                
+                <button type="submit" name="quality" value="2" class="btn" style="background: #ffc107;">
+                    Hard<br><small style="font-size: 12px;">~10 min</small>
+                </button>
+                
+                <button type="submit" name="quality" value="3" class="btn" style="background: #28a745;">
+                    Good<br><small style="font-size: 12px;">~1 day</small>
+                </button>
+                
+                <button type="submit" name="quality" value="4" class="btn" style="background: #17a2b8;">
+                    Easy<br><small style="font-size: 12px;">~4 days</small>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function flipCard() {
+            document.getElementById('card-front').style.display = 'none';
+            document.getElementById('card-back').style.display = 'block';
+        }
+    </script>
+    {% else %}
+    <div style="text-align: center; padding: 60px;">
+        <h3 style="color: #28a745; margin-bottom: 20px;">🎉 Great job!</h3>
+        <p style="color: #666; font-size: 18px;">You've completed all reviews for today.</p>
+        <a href="{% url 'deck_detail' deck.id %}" class="btn" style="margin-top: 30px;">Back to Deck</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

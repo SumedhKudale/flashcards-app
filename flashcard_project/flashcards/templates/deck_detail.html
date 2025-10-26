@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ deck.name }} - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'deck_list' %}" style="color: #667eea; text-decoration: none;">← Back to Decks</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 30px;">
+    <div>
+        <h2>{{ deck.name }}</h2>
+        <p style="color: #666; margin-top: 10px;">{{ deck.description }}</p>
+        <p style="color: #888; margin-top: 10px;">
+            📊 {{ total_cards }} total cards | 
+            📅 {{ cards_due }} due for review
+        </p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        <a href="{% url 'review' deck.id %}" class="btn" style="background: #28a745;">Start Review</a>
+        <a href="{% url 'card_create' deck.id %}" class="btn">+ Add Card</a>
+        <a href="{% url 'deck_edit' deck.id %}" class="btn btn-secondary">Edit Deck</a>
+        <a href="{% url 'deck_delete' deck.id %}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+
+<h3 style="margin-bottom: 20px;">Cards in this Deck</h3>
+
+{% if cards %}
+<div style="display: grid; gap: 15px;">
+    {% for card in cards %}
+    <div class="card">
+        <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 20px; align-items: start;">
+            <div>
+                <strong style="color: #667eea;">Front:</strong>
+                <p style="margin-top: 5px;">{{ card.front|truncatewords:15 }}</p>
+            </div>
+            <div>
+                <strong style="color: #764ba2;">Back:</strong>
+                <p style="margin-top: 5px;">{{ card.back|truncatewords:15 }}</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{% url 'card_edit' card.id %}" class="btn btn-secondary" style="padding: 8px 15px;">Edit</a>
+                <a href="{% url 'card_delete' card.id %}" class="btn btn-danger" style="padding: 8px 15px;">Delete</a>
+            </div>
+        </div>
+        <p style="color: #888; font-size: 12px; margin-top: 10px;">
+            Next review: {{ card.next_review_date|date:"M d, Y" }} | 
+            Repetitions: {{ card.repetitions }} | 
+            Ease: {{ card.ease_factor|floatformat:2 }}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="text-align: center; color: #888; padding: 40px;">
+    No cards in this deck yet. <a href="{% url 'card_create' deck.id %}" style="color: #667eea;">Add your first card!</a>
+</p>
+{% endif %}
+
+{% endblock %}

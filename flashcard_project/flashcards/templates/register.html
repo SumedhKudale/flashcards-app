@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto;">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Create Account</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="id_username">Username:</label>
+        {{ form.username }}
+        
+        <label for="id_email">Email:</label>
+        {{ form.email }}
+        
+        <label for="id_first_name">First Name:</label>
+        {{ form.first_name }}
+        
+        <label for="id_last_name">Last Name:</label>
+        {{ form.last_name }}
+        
+        <label for="id_password1">Password:</label>
+        {{ form.password1 }}
+        
+        <label for="id_password2">Confirm Password:</label>
+        {{ form.password2 }}
+        
+        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Register</button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 20px;">
+        Already have an account? <a href="{% url 'login' %}" style="color: #667eea;">Login here</a>
+    </p>
+</div>
+{% endblock %}

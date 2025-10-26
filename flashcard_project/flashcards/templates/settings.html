@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2 style="margin-bottom: 30px;">⚙️ Settings</h2>
+    
+    <div class="card">
+        <h3>Review Settings</h3>
+        
+        <form method="POST" style="margin-top: 20px;">
+            {% csrf_token %}
+            
+            <label for="id_cards_per_day">Cards per Day:</label>
+            <p style="color: #666; font-size: 14px; margin-bottom: 10px;">
+                Maximum number of cards to review per deck each day
+            </p>
+            {{ form.cards_per_day }}
+            
+            <button type="submit" class="btn" style="margin-top: 10px;">Save Settings</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h3>Account Information</h3>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Member since:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+    </div>
+</div>
+{% endblock %}

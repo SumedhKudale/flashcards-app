@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}My Decks - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h2>My Decks</h2>
+    <a href="{% url 'deck_create' %}" class="btn">+ Create New Deck</a>
+</div>
+
+{% if decks %}
+<div style="display: grid; gap: 20px;">
+    {% for deck in decks %}
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+                <h3>{{ deck.name }}</h3>
+                <p style="color: #666; margin: 10px 0;">{{ deck.description }}</p>
+                <p style="color: #888; font-size: 14px;">
+                    Created: {{ deck.created_at|date:"M d, Y" }} | 
+                    Cards: {{ deck.card_count }}
+                </p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{% url 'deck_detail' deck.id %}" class="btn">View</a>
+                <a href="{% url 'deck_edit' deck.id %}" class="btn btn-secondary">Edit</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="text-align: center; color: #888; padding: 40px;">No decks yet. Create your first deck!</p>
+{% endif %}
+
+{% endblock %}

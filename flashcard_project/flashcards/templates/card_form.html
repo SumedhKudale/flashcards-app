@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Flashcard App{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'deck_detail' deck.id %}" style="color: #667eea; text-decoration: none;">← Back to {{ deck.name }}</a>
+    </div>
+    
+    <h2 style="margin-bottom: 30px;">{{ title }}</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="id_front">Front of Card:</label>
+        {{ form.front }}
+        
+        <label for="id_back">Back of Card:</label>
+        {{ form.back }}
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn">Save Card</button>
+            {% if not card %}
+            <button type="submit" name="save_and_add" class="btn" style="background: #28a745;">Save & Add Another</button>
+            {% endif %}
+            <a href="{% url 'deck_detail' deck.id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
